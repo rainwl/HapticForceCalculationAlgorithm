@@ -9,3 +9,11 @@ HFCA/UserSettings/Layouts/default-2021.dwlt
 *.csproj
 
 *.sln
+
+HFCA/UserSettings/
+
+HFCA/Logs/
+
+HFCA/obj/Debug/
+
+HFCA/.idea/.idea.HFCA/.idea/
