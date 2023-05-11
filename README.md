@@ -20,7 +20,7 @@
     - because of the `loss of significance`,there are requirements for the `thickness` of the `grid division` and the size of the `sphere collider`, which need to be `balanced`
     - finally, we filled the `complex mesh` with `sphere collider` large and small
 - II.Calculate the haptic force
-  - we need a `IST` (`inner sphere tree`),different from `BVH`
-  - however ,we use `Unity` ,so ,IST is not necessary. 
-  - finally,we calculate the 6-DOF `forces`, `torques`, etc. based on the `previous overlap` of the `sphere collider`s, the `count`, etc
-  - we choose this algorithm because of we need `500-1000hz` speed
+  - I. we need a `IST` (`inner sphere tree`),different from `BVH`
+  - II. however ,we use `Unity` ,so ,IST is not necessary. 
+  - III. finally,we calculate the 6-DOF `forces`, `torques`, etc. based on the `previous overlap` of the `sphere collider`s, the `count`, etc
+  - IV. we choose this algorithm because of we need `500-1000hz` speed
