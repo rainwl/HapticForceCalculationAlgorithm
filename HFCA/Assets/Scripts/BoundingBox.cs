@@ -1,12 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Xml.Schema;
-using JetBrains.Annotations;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Random = System.Random;
 
 public class BoundingBox : MonoBehaviour
 {
