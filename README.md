@@ -5,7 +5,7 @@
 ## I.Overview
 
 - I.`Voxelization` and `Surface Packing`  (fill with `inner sphere`)
-  - I. we need to create a `boundingbox` arround the `complex mesh` , and confirm that the mesh is `closed`
+  - [x] I. we need to create a `boundingbox` arround the `complex mesh` , and confirm that the mesh is `closed`
   - II. grid the `boudingbox` according to the `customized specified resolution` (box size)
   - III. determine whether the `voxel` (segmented box) is inside or outside the `complex mesh` , just like `SDF`,the `outside voxels `were `eliminated`
   - IV. we need to calculate a `distance map` (we could use `physical raycast` from unity,if not ,`BVH` instead)
@@ -24,3 +24,4 @@
   - II. however ,we use `Unity` ,so ,IST is not necessary. 
   - III. finally,we calculate the 6-DOF `forces`, `torques`, etc. based on the `previous overlap` of the `sphere collider`s, the `count`, etc
   - IV. we choose this algorithm because of we need `500-1000hz` speed
+ 
