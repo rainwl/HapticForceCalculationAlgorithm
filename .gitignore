@@ -1,0 +1,11 @@
+
+HFCA/Library/
+HFCA/Temp/
+
+HFCA/UserSettings/EditorUserSettings.asset
+
+HFCA/UserSettings/Layouts/default-2021.dwlt
+
+*.csproj
+
+*.sln
