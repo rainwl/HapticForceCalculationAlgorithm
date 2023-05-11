@@ -1,0 +1,2 @@
+# HapticForceCalculationAlgorithm
+Haptic force calculation algorithm
