@@ -155,11 +155,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d35ab89b160834cad85bee09dbe2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Resolution: 16
   GridSize: 0.1
-  GridCorner:
-    x: 0
-    y: 0
-    z: 0
+  Chunks: 2
+  UseVoxelStyle: 0
+  previewMat: {fileID: 0}
+--- !u!114 &367201297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367201288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ea24ae3e704694ea392f42a66cd449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 5
+  RadiusA: 0
+  RadiusB: 0
+  N: 3
+  Offset: 0
+  CellSize: 0
+  X: 1
+  Y: 1
+  Z: 1
+  Axis: 0
 --- !u!1001 &660601229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -214,7 +236,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 3a8d0290d80a2a144bd47fdf0230f945, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4717b199010ca4cb3a8a7a465ec457d2, type: 2}
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: -5754084199372789682, guid: 3a8d0290d80a2a144bd47fdf0230f945, type: 3}
       propertyPath: m_Mesh
       value: 
