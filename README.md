@@ -34,3 +34,6 @@ I iterate the SDF by ComputeBuffer,create a computeShader and define a computeBu
 However,there's some exceptions . such as the fileBytes 's length is "(Multiple of 4) + 1",and property (Result) at kernel index (0) is not set ,etc.
 
 So,I 'd like to use another way to implement this func,and when I have been done this thing,I will come back to solve these problems.
+
+#### II. `Voxelization technology based on Octree`
+Octree is a hierarchical structure that divides a three-dimensional space into a series of octree nodes, each of which represents a cube volume and is subdivided into smaller child nodes as needed.Using Octree's voxelization technology can improve efficiency while maintaining high quality voxelization.
