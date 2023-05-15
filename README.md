@@ -64,3 +64,11 @@ Penetration volume of two spheres with radius r1 and r2 respectively.
   -  iterate from the dynamic cylinder
   -  check for null,if not,calculate
 
+
+
+## Statistics
+In Unity2019,Graphics can run as 6000 fps
+
+but in Unity2021,only 300 fps
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202023-05-15%20174609.png)
