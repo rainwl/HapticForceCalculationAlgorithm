@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PenaltyForceCalculate
 {
@@ -8,7 +10,10 @@ namespace PenaltyForceCalculate
         [SerializeField] private Transform staticObj;
         [SerializeField] private Transform dynamicObj;
         
-        public Vector3 penaltyForce;
+        public Vector3 penaltyForce = Vector3.zero;
+        public Vector3 lastForce = Vector3.zero;
+        private float _penaltyForce;
+        private float _lastForce;
         
         private readonly List<SphereCollider> _staticList = new();
         private readonly List<SphereCollider> _dynamicList = new();
@@ -38,16 +43,32 @@ namespace PenaltyForceCalculate
 
         private void Update()
         {
+            var colliding = false;
             foreach (var sphere1 in _dynamicList)
             {
                 foreach (var sphere2 in _staticList)
                 {
-                    var isColliding = Physics.CheckSphere(sphere1.transform.position, sphere1.radius + sphere2.radius);
-                    if (!isColliding) continue;
-                    var force = CalculateCommon.TotalForce(sphere1, sphere2);
-                    penaltyForce += force;
+                    if (sphere1.bounds.Intersects(sphere2.bounds))
+                    {
+                        colliding = true;
+                        var force = CalculateCommon.PenaltyForce(sphere1, sphere2);
+                        penaltyForce += force;
+                        lastForce = penaltyForce;
+                    }
                 }
             }
+
+            if (!colliding)
+            {
+                penaltyForce = Vector3.zero;
+            }
+        }
+
+        private void OnGUI()
+        {
+            GUI.skin.label.fontSize = 50;
+            GUI.Label(new Rect(900, 800, 1000, 500), "penalty force: " + penaltyForce);
+            GUI.Label(new Rect(900, 900, 1000, 500), "last force: " + lastForce);
         }
     }
 }

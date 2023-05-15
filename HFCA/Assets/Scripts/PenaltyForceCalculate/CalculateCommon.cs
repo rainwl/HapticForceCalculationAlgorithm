@@ -11,10 +11,15 @@ namespace PenaltyForceCalculate
         /// <param name="sphere1"></param>
         /// <param name="sphere2"></param>
         /// <returns>penalty force</returns>
-        public static Vector3 TotalForce(SphereCollider sphere1, SphereCollider sphere2)
+        public static Vector3 PenaltyForce(SphereCollider sphere1, SphereCollider sphere2)
         {
-            var volume = Volume(sphere1.radius, sphere2.radius, Vector3.Distance(sphere1.center, sphere2.center));
-            var force = ForceOfPenalty(volume, sphere1.center, sphere2.center);
+            var r1 = sphere1.radius;
+            var r2 = sphere2.radius;
+            var sphere1Center = sphere1.transform.TransformPoint(sphere1.center);
+            var sphere2Center = sphere2.transform.TransformPoint(sphere2.center);
+            var d = Vector3.Distance(sphere1Center, sphere2Center);
+            var volume = Volume(r1, r2, d);
+            var force = Force(volume, sphere1Center, sphere2Center);
             return force;
         }
     
@@ -25,7 +30,7 @@ namespace PenaltyForceCalculate
         /// <param name="center1"></param>
         /// <param name="center2"></param>
         /// <returns></returns>
-        private static Vector3 ForceOfPenalty(float volume, Vector3 center1, Vector3 center2)
+        private static Vector3 Force(float volume, Vector3 center1, Vector3 center2)
         {
             var force = volume * (center1 - center2);
             return force;
