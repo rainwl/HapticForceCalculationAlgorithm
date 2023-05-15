@@ -43,11 +43,11 @@ Evaluate signed-distance-fields with great efficiency using the power of the Uni
 
 ## III.Calculate
 ### III.I theory
-The direction of the penalty force can be derived from the weighted average of all vectors between the centers of colliding pairs of shperes,weighted by their overlap
+The direction of the penalty force can be derived from the weighted average of all vectors between the centers of colliding pairs of shperes,weighted by their overlap.
 
 A simple heuristic would be to consider all overlapping pairs of spheres separately.
 
-Penetration volume of two spheres with radius r1 and r2 respectively
+Penetration volume of two spheres with radius r1 and r2 respectively.
 
 ![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/71FC2EF3-992C-4116-8081-95F59BA50AFF.png)
 
@@ -57,5 +57,10 @@ Penetration volume of two spheres with radius r1 and r2 respectively
 
 ![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/8C1020EC-869D-4b88-A00F-9651954128F4.png)
 
+### III.II step
 
+- Common Func for calculate penalty force between two spheres
+- iterate all of the spheres and sum the force up
+  -  iterate from the dynamic cylinder
+  -  check for null,if not,calculate
 
