@@ -41,3 +41,21 @@ Octree is a hierarchical structure that divides a three-dimensional space into a
 #### III. `Native SDF`
 Evaluate signed-distance-fields with great efficiency using the power of the Unity Job System and the Burst Compiler.
 
+## III.Calculate
+### III.I theory
+The direction of the penalty force can be derived from the weighted average of all vectors between the centers of colliding pairs of shperes,weighted by their overlap
+
+A simple heuristic would be to consider all overlapping pairs of spheres separately.
+
+Penetration volume of two spheres with radius r1 and r2 respectively
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/71FC2EF3-992C-4116-8081-95F59BA50AFF.png)
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/BDC69D2B-9A72-4075-8D0B-F4A66BFEC1D1.png)
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/17D12242-1589-4c6d-8061-3A60FF09BD29.png)
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/8C1020EC-869D-4b88-A00F-9651954128F4.png)
+
+
+
