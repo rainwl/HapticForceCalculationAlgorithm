@@ -79,4 +79,15 @@ Penetration volume of two spheres with radius r1 and r2 respectively.
   - in `OnTriggerExit`,clear the `previous position` up 
   - because the box we collide,has some sphere colliders,inevitably, there are gaps
   - so,we need to handle this
-  - 
+
+### Thinking
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/1.png)
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/prevPos2.png)
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/calculate.png)
+- [x] we create two collider `collections`
+- [x] when a  `sphere collider` `First` `OnTriggerEnter`,record the position
+  - [x] Notice:`First Enter` `record once`
+- in a frame:calculate the distance
+- 

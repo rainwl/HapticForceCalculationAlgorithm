@@ -6,7 +6,7 @@ public class ParentColliderManager : MonoBehaviour
 {
     private ColliderManager[] childColliders;
     private float totalDistance;
-
+    public Color textColor;
     private void Start()
     {
         childColliders = GetComponentsInChildren<ColliderManager>();
@@ -22,6 +22,7 @@ public class ParentColliderManager : MonoBehaviour
     }
     private void OnGUI()
     {
+        GUI.color = textColor;
         GUI.skin.label.fontSize = 50;
         GUI.Label(new Rect(900, 800, 1000, 500), "penalty force: " + totalDistance);
         //GUI.Label(new Rect(900, 900, 1000, 500), "last force: " + lastDistance);
