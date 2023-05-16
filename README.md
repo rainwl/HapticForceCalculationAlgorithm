@@ -86,8 +86,20 @@ Penetration volume of two spheres with radius r1 and r2 respectively.
 ![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/prevPos2.png)
 
 ![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/calculate.png)
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/second%20frame.png)
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/multi.png)
+
+
+
 - [x] we create two collider `collections`
 - [x] when a  `sphere collider` `First` `OnTriggerEnter`,record the position
   - [x] Notice:`First Enter` `record once`
-- in a frame:calculate the distance
-- 
+- [x] in a frame:calculate the distance
+  - [x] each sphere collider `previousPos` ,like graph `Right` view
+- [x] in second frame,distance is `a` or `b` ?
+  - [x] I choose `a` now
+  - [x] need a discuss
+- we need to create 2 collider (mesh collider) for `CubeCollection `and `CylinderCollection`
+  - and we use this collider collide for `bool` control
