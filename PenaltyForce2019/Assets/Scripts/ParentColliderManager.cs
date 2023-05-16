@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class ParentColliderManager : MonoBehaviour
     private ColliderManager[] childColliders;
     private float totalDistance;
     public Color textColor;
+
+
     private void Start()
     {
         childColliders = GetComponentsInChildren<ColliderManager>();
@@ -15,11 +18,32 @@ public class ParentColliderManager : MonoBehaviour
     private void Update()
     {
         totalDistance = 0f;
-        foreach (var child in childColliders) {
-            totalDistance += child.totalDistance;
+        foreach (var child in childColliders)
+        {
+            totalDistance += child.TotalDistance;
         }
-
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Box"))
+        {
+            
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Box"))
+        {
+            foreach (var child in childColliders)
+            {
+                child.IsFirstEnter = false;
+                totalDistance = 0;
+            }
+            
+        }
+    }
+
     private void OnGUI()
     {
         GUI.color = textColor;

@@ -81,7 +81,8 @@ Penetration volume of two spheres with radius r1 and r2 respectively.
   - so,we need to handle this
 
 ### Thinking
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/1.png)
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/overview.png)
 
 ![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/prevPos2.png)
 
@@ -89,8 +90,9 @@ Penetration volume of two spheres with radius r1 and r2 respectively.
 
 ![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/second%20frame.png)
 
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/multi.png)
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/multi2.png)
 
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/sum.png)
 
 
 - [x] we create two collider `collections`
@@ -99,8 +101,23 @@ Penetration volume of two spheres with radius r1 and r2 respectively.
 - [x] in a frame:calculate the distance
   - [x] each sphere collider `previousPos` ,like graph `Right` view
 - [x] in second frame,distance is `a` or `b` ?
-  - [x] I choose `a` now
+  - [x] I choose `a` now (yes)
   - [x] need a discuss
-- we need to create 2 collider (mesh collider) for `CubeCollection `and `CylinderCollection`
-  - and we use this collider collide for `bool` control
-  - so far,frame keep `4000-4500fps`,collide minimum `2500fps`
+- [x] we need to create 2 collider (mesh collider) for `CubeCollection `and `CylinderCollection`
+  - [x] and we use this collider collide for `bool` control
+  - [x] so far,frame keep `4000-4500fps`,collide minimum `2500fps`
+- [x] if we use `=` instead of `+=` ,the force will lower down to 0 automatically (yes)
+
+
+
+```C#
+    private void OnTriggerStay(Collider other)
+    {
+        // I choose distance "a" 
+        var currPos = transform.position;
+        var delta = currPos - prevPos;
+        // if there need "+=" ? use "=" instead ?
+        //TotalDistance += delta.magnitude;
+        TotalDistance = delta.magnitude;
+    }
+```

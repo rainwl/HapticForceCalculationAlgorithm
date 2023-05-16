@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ColliderManager : MonoBehaviour
 {
     private Vector3 prevPos;
-    public float totalDistance;
-    private bool isFirstEnter = false;
-    
+    public float TotalDistance { get; set; }
+    public bool IsFirstEnter { get; set; } = false;
+
     private void OnTriggerEnter(Collider other)
     {
-        if (isFirstEnter == false)
+        if (IsFirstEnter == false && !other.gameObject.CompareTag("Box"))
         {
-            isFirstEnter = true;
+            IsFirstEnter = true;
             prevPos = transform.position;
         }
     }
@@ -22,7 +20,10 @@ public class ColliderManager : MonoBehaviour
         // I choose distance "a" 
         var currPos = transform.position;
         var delta = currPos - prevPos;
-        totalDistance += delta.magnitude;
+        // if there need "+=" ? use "=" instead ?
+        //TotalDistance += delta.magnitude;
+        TotalDistance = delta.magnitude;
+        
         
         //distance "b"
         //code later
@@ -32,8 +33,7 @@ public class ColliderManager : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Box"))
         {
-            totalDistance = 0;
-            Debug.Log("exit");
+            TotalDistance = 0;
         }
     }
     
