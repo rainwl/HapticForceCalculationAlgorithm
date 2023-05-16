@@ -66,9 +66,17 @@ Penetration volume of two spheres with radius r1 and r2 respectively.
 
 
 
-## Statistics
-In Unity2019,Graphics can run as 6000 fps
+## IV.Calulate theory II
 
-but in Unity2021,only 300 fps
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/theory2.png)
 
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202023-05-15%20174609.png)
+- when a `sphere collider` 's `OnTriggerEnter` is called,record the `current position`
+  - do a research about performance between `trigger` and `collision`
+  - and calculate the value between `current position` and `previous position`
+  - in `OnTriggerEnter`,record the position (previous position)
+  - in `OnTriggerStay` ,calculate the value between pre. and cur.
+  - because there's a lot of `sphere collider`,so,everyone need to calculte
+  - in `OnTriggerExit`,clear the `previous position` up 
+  - because the box we collide,has some sphere colliders,inevitably, there are gaps
+  - so,we need to handle this
+  - 
