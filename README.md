@@ -107,7 +107,11 @@ Penetration volume of two spheres with radius r1 and r2 respectively.
   - [x] and we use this collider collide for `bool` control
   - [x] so far,frame keep `4000-4500fps`,collide minimum `2500fps`
 - [x] if we use `=` instead of `+=` ,the force will lower down to 0 automatically (yes)
-
+- [x] `NO` when `first sphere collider` in cylinder collection collide the `any sphere collider` box collection
+  - [x] we should make cylinder collection mesh `static` there
+- [ ] we should use `cylinder` collide `Box` to static it 
+  - [ ] and we should use `OnCollisionEnter` to get the `collision hit` info
+  - [ ] later we will draw the force at the hit postion 
 
 
 ```C#
