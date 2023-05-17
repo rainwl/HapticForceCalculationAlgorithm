@@ -38,8 +38,8 @@ public class MyScheduledJob : MonoBehaviour
     private void LateUpdate()
     {
         handle.Complete();
-        float aPlusB = result[0];
-        Debug.Log(aPlusB);
+        var aPlusB = result[0];
+        //Debug.Log(aPlusB);
         result.Dispose();
     }
 }

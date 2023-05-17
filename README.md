@@ -121,3 +121,8 @@ Penetration volume of two spheres with radius r1 and r2 respectively.
         TotalDistance = delta.magnitude;
     }
 ```
+
+## V.High-Performance
+Writing multithreaded code can provide high-performance benefits.
+These include significant gains in frame rate.
+Using the Burst compiler with C# jobs gives you improved code generation quality.
