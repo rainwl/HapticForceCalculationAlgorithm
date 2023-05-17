@@ -9,6 +9,28 @@ public class CollisionManager : MonoBehaviour
     private float finalDistance;
     public Color textColor;
 
+    /// <summary>
+    /// when first collider colliding,Cylinder collection should be separated
+    /// a cylinder collection mesh should be render at current position
+    /// </summary>
+    public static bool IsSeparation { get; set; } = false;
+
+    private void OnCollisionEnter(UnityEngine.Collision other)
+    {
+        if (other.gameObject.CompareTag("Box"))
+        {
+            IsSeparation = true;
+            Debug.Log("Collision Enter");
+        }
+    }
+
+    private void OnCollisionExit(UnityEngine.Collision other)
+    {
+        if (other.gameObject.CompareTag("Box"))
+        {
+            IsSeparation = false;
+        }
+    }
 
     private void Start()
     {
@@ -26,7 +48,7 @@ public class CollisionManager : MonoBehaviour
         finalDistance = 0f;
         foreach (var child in childColliders)
         {
-            finalDistance += child.TotalDistance;
+            finalDistance += child.Distance;
         }
     }
     /// <summary>

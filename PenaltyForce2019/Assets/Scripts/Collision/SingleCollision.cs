@@ -1,13 +1,30 @@
 ﻿using UnityEngine;
-
 public class SingleCollision : MonoBehaviour
 {
-    // Record the position at the time of the first collision
-    private Vector3 prevPos;
-    // magnitude of Vector3
-    public float TotalDistance { get; set; }
+    #region Fields
+    /// <summary>
+    /// Record the position at the time of the first collision
+    /// </summary>
+    private Vector3 previousPos;
+
+    /// <summary>
+    /// magnitude of Vector3
+    /// </summary>
+    public float Distance { get; private set; } = 0;
+
+    /// <summary>
+    /// each sphere collider 's force
+    /// </summary>
+    public Vector3 SingleForce { get; set; } = Vector3.zero;
+    
+    /// <summary>
+    /// each collider could enter once,and record the pos there
+    /// </summary>
     public bool IsFirstEnter { get; set; } = false;
     
+    #endregion
+
+    #region Trigger Methods
     
     /// <summary>
     /// Only record the first collision position
@@ -15,9 +32,9 @@ public class SingleCollision : MonoBehaviour
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        if (IsFirstEnter != false || other.gameObject.CompareTag("Box")) return;
+        if (IsFirstEnter != false) return;
         IsFirstEnter = true;
-        prevPos = transform.position;
+        previousPos = transform.position;
     }
     
     /// <summary>
@@ -26,10 +43,10 @@ public class SingleCollision : MonoBehaviour
     /// <param name="other"></param>
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Box")) return;
         var currPos = transform.position;
-        var delta = currPos - prevPos;
-        TotalDistance = delta.magnitude;
+        var delta = currPos - previousPos;
+        SingleForce = delta;
+        Distance = delta.magnitude;
     }
 
     /// <summary>
@@ -40,8 +57,10 @@ public class SingleCollision : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Box"))
         {
-            TotalDistance = 0;
+            Distance = 0;
         }
     }
+
+    #endregion
     
 }
