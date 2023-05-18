@@ -70,6 +70,7 @@ namespace DynamicCollision
                     DynamicCommon.IsDictionaryWritten = false;
                     DynamicCommon.DynamicDictionary.Clear();
                     DynamicCommon.CollisionList.Clear();
+                    DynamicCommon.IsShadowFollow = true;
                 }
             }
         }

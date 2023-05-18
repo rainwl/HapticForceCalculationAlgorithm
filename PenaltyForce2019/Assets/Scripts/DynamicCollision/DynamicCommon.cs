@@ -23,7 +23,11 @@ namespace DynamicCollision
         /// Determine if the scene is free of any collisions
         /// </summary>
         public static bool IsNoCollisions { get; set; } = true;
-        
+
+        /// <summary>
+        /// Whether the shadow follow the Collection
+        /// </summary>
+        public static bool IsShadowFollow { get; set; } = true;
         
         /// <summary>
         /// If and only if the first collision,record each collider position

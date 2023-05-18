@@ -30,6 +30,7 @@ namespace DynamicCollision
             if (DynamicCommon.IsInitialCollision == false)
             {
                 DynamicCommon.IsInitialCollision = true;
+                DynamicCommon.IsShadowFollow = false;
                 // OriginVector
                 var posFirst = transform.position;
                 var posOther = other.transform.position;

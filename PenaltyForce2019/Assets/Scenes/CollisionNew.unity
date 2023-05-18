@@ -87936,7 +87936,7 @@ GameObject:
   - component: {fileID: 2084001164}
   - component: {fileID: 2084001163}
   - component: {fileID: 2084001162}
-  - component: {fileID: 2084001161}
+  - component: {fileID: 2084001159}
   m_Layer: 0
   m_Name: CylinderShadow
   m_TagString: Untagged
@@ -87944,7 +87944,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2084001161
+--- !u!114 &2084001159
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87953,7 +87953,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2084001158}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11a6a529b46511147976371b2840930d, type: 3}
+  m_Script: {fileID: 11500000, guid: f8d4f191bd0342344ae4fc18daec60af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   master: {fileID: 595531754}
@@ -87964,7 +87964,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2084001158}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
