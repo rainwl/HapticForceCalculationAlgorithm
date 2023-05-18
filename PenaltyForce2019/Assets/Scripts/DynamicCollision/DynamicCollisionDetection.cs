@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
 namespace DynamicCollision
 {
@@ -16,27 +14,17 @@ namespace DynamicCollision
         private void Update()
         {
             // default no collide
-            var noCollisions = true;
-        
+            DynamicCommon.IsNoCollisions = true;
             foreach (var col in dyColliders)
             {
                 if (!col.isColliding)
                 {
                     continue;
                 }
-                noCollisions = false;
+
+                DynamicCommon.IsNoCollisions = false;
                 break;
             }
-            
-            // if all colliders has no collision event
-            if (noCollisions)
-            {
-                DynamicCommon.IsInitialCollision = false;
-                DynamicCommon.IsDictionaryWritten = false;
-                DynamicCommon.DynamicDictionary.Clear();
-            }
         }
-
-        
     }
 }
