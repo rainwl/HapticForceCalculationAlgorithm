@@ -68,8 +68,6 @@ Penetration volume of two spheres with radius r1 and r2 respectively.
 
 ## IV.Calulate theory II
 
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/theory2.png)
-
 - when a `sphere collider` 's `OnTriggerEnter` is called,record the `current position`
   - do a research about performance between `trigger` and `collision`
   - and calculate the value between `current position` and `previous position`
@@ -130,4 +128,58 @@ Penetration volume of two spheres with radius r1 and r2 respectively.
 Writing multithreaded code can provide high-performance benefits.
 These include significant gains in frame rate.
 Using the Burst compiler with C# jobs gives you improved code generation quality.
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/Group%2010.png)
+think later~
+## Refactor Theory
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frameALL.png)
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame0.png)
+- `Box Collection` : 10 * 10 * 10  `SphereColliders` with radius `0.5f` and `Is Trigger` is `on`
+- `Cylinder Collection`:2 * 2 * 20 `SphereColliders` with radius `0.25f` , `Rigid body` is contained and `Is Kinematic` is `on`
+- `Box Collection` is static 
+- `Cylinder Collection` is dynamic
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame1.png)
+- If and only if the `SphereColliders` in the `Cylinder Collection` and the `SphereColliders` in the `Box Collection` first collide
+  - Record the position of all `SphereColliders` in the `Cylinder Collection` and write it to the `Dictionary<Sphere Collider,Vector3>`
+  -  bool `IsInitialCollision` = true
+  - When there are not any collisions in the scene,`IsInitialCollision` = false
+  - Record the `vectorOrigin` : collider1.center - collider2.center
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame2.png)
+- When some `SphereColliders` in `Cylinder Collection` penetrates into `Box Collection`
+- I mark them with blue in graph
+- Create a List&lt;Sphere Collider> named `collisionList`
+- In `OnTriggerStay`
+  - Check if this exists in `collisionList`
+  - //such as , in frame 2,`vector_frame_2` and `vector_origin` are reversed ,and this case can be added to the collisionList
+  - collisionList.Add(this)
+  - record the previous frame postion and current position
+- In `CollisionManager`
+  - iterate collisionList 
+  - Determine the direction of the motion vector of each `sphere collider` and the original vector in the current frame
+  - if not ,remove it
+  - and sum the `direction` and `distance`
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame3.png)
+- We can see that in the third frame, the `Cylinder Collection` falls back, and the motion vector of the `sphere collider` identified in the figure at this time is `frame3`
+- `frame3` and `origin` are in the same direction, so this `sphere collider` is removed from the `collisionList`
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame3case2.png)
+- In this case,everything goes easy
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame4.png)
+- Although some of the `sphere collider`s are out of the `Box Collection` zone
+- they are still in the `collisionList` and reverse the `origin`, so the force continues to be calculated
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame5.png)
+- Even though all the `sphere collider`s are out of the `Box Collection` zone
+- they are still in the `collisionList` and reverse the `origin`, so the force continues to be calculated
+
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame6.png)
+- In this case , `Cylinder Collection` has been rotated,and some of `sphere collider`s have been gone back,some reversed
+- such as,the `sphere collider` which keep vector `frame6_1`,has the same direciton of `origin`
+- // and we will remove it from the `collisionList` 
+- we could not remove ir from the list,because when it rotate next ,we will could not calculate it
+- so ,just substract its distance 
+- the operation `Remove`,just could be called at the time:
+- exit from the collider and go as the same direction with origin
