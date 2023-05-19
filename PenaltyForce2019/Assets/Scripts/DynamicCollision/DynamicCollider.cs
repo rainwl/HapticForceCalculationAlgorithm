@@ -32,9 +32,11 @@ namespace DynamicCollision
                 DynamicCommon.IsInitialCollision = true;
                 DynamicCommon.IsShadowFollow = false;
                 // OriginVector
-                var posFirst = transform.position;
-                var posOther = other.transform.position;
-                DynamicCommon.OriginVector = posFirst - posOther;
+                
+                // var posFirst = transform.position;
+                // var posOther = other.transform.position;
+                // DynamicCommon.OriginVector = posFirst - posOther + posOther;
+                DynamicCommon.OriginVector = transform.position;
             }
             isColliding = true;
         }
