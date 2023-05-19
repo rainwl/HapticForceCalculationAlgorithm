@@ -34,31 +34,48 @@ namespace DynamicCollision
                 var posDelta = currentPos - item.lastPos;
                 item.lastPos = currentPos;
                 
-                // If it is the reverse of origin
-                // then the distance to the original location (in the dictionary) is calculated
-                if (!DynamicCommon.Direction(posDelta))
+                // The direction is not distinguished and the force is calculated directly now
+                foreach (var kvp in DynamicCommon.DynamicDictionary)
                 {
-                    foreach (var kvp in DynamicCommon.DynamicDictionary)
+                    if (kvp.Key == item)
                     {
-                        if (kvp.Key == item)
-                        {
-                            var force = kvp.Value - currentPos;
-                            DynamicCommon.PenaltyForce += force;
-                        }
+                        var force = kvp.Value - currentPos;
+                        DynamicCommon.PenaltyForce += force;
                     }
                 }
-                else
-                {
-                    foreach (var kvp in DynamicCommon.DynamicDictionary)
-                    {
-                        if (kvp.Key == item)
-                        {
-                            var force = kvp.Value - currentPos;
-                            DynamicCommon.PenaltyForce -= force;
-                        }
-                    }
-                }
+                
+                // I prefer this LINQ approach, but it hurts 300 frames
+                // foreach (var force in from kvp in DynamicCommon.DynamicDictionary where kvp.Key == item select kvp.Value - currentPos)
+                // {
+                //     DynamicCommon.PenaltyForce += force;
+                // }
 
+                #region Discard Calculate Method
+                // // If it is the reverse of origin
+                // // then the distance to the original location (in the dictionary) is calculated
+                // if (!DynamicCommon.Direction(posDelta))
+                // {
+                //     foreach (var kvp in DynamicCommon.DynamicDictionary)
+                //     {
+                //         if (kvp.Key == item)
+                //         {
+                //             var force = kvp.Value - currentPos;
+                //             DynamicCommon.PenaltyForce += force;
+                //         }
+                //     }
+                // }
+                // else
+                // {
+                //     foreach (var kvp in DynamicCommon.DynamicDictionary)
+                //     {
+                //         if (kvp.Key == item)
+                //         {
+                //             var force = kvp.Value - currentPos;
+                //             DynamicCommon.PenaltyForce += force; // It used to be -=, but now it's +=,+= is right
+                //         }
+                //     }
+                // }
+                #endregion
             }
 
             // Reset only if all spheres are not colliding and the departure direction is the same as the origin
