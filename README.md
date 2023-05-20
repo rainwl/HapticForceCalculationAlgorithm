@@ -66,57 +66,129 @@ So,I 'd like to use another way to implement this func,and when I have been done
 ![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/sdf.png)
 
 ```C#
-        //Read SDF data
-        var sdfData = ReadSdfDataFromFile(Application.dataPath+"/SDF/"+"sphereSDF.asset");
-        
-        //Create ComputeBuffer and pass SDF data to it
-        _sdfBuffer = new ComputeBuffer(sdfData.Length, sizeof(float));
-        _sdfBuffer.SetData(sdfData);
-        
-        //Create Output Buffer
-        _outputBuffer = new ComputeBuffer(sdfData.Length, sizeof(float));
-        
-        //Set the parameters in ComputeShader
-        computeShader.SetBuffer(0,"sdfBuffer",_sdfBuffer);
-        computeShader.SetBuffer(0,"outputBuffer",_outputBuffer);
-        
-        //Call ComputeShader
-        computeShader.SetInt("Result",42);// 42 is arbitrary
-        computeShader.Dispatch(0,sdfData.Length/64,1,1);
-        
-        //Get data from output buffer
-        var outputData = new float[sdfData.Length];
-        _outputBuffer.GetData(outputData);
-        
-        //Save output
-        SaveSdfDataToFile(Application.dataPath+"/SDF/"+"output.asset" ,outputData);
-        
-        //Dispose compute buffer
-        _sdfBuffer.Release();
-        _outputBuffer.Release();
+var sdfData = ReadSdfDataFromFile(path);
+_sdfBuffer = new ComputeBuffer(sdfData.Length, sizeof(float));
+_sdfBuffer.SetData(sdfData);
+_outputBuffer = new ComputeBuffer(sdfData.Length, sizeof(float));
+computeShader.SetBuffer(0,"sdfBuffer",_sdfBuffer);
+computeShader.SetBuffer(0,"outputBuffer",_outputBuffer);
+computeShader.Dispatch(0,sdfData.Length/64,1,1);
+var outputData = new float[sdfData.Length];
+_outputBuffer.GetData(outputData);
+SaveSdfDataToFile(outpath,outputData);
+_sdfBuffer.Release();
+_outputBuffer.Release();
 ```
 
-#### II. `Voxelization technology based on Octree`
-Octree is a hierarchical structure that divides a three-dimensional space into a series of octree nodes, each of which represents a cube volume and is subdivided into smaller child nodes as needed.Using Octree's voxelization technology can improve efficiency while maintaining high quality voxelization.
+#### Voxelization technology based on Octree
+Octree is a hierarchical structure that divides a 
+three-dimensional space into a series of octree nodes, 
+each of which represents a cube volume and is 
+subdivided into smaller child nodes as needed.
+Using Octree's voxelization technology can improve 
+efficiency while maintaining high quality voxelization.
 
-#### III. `Native SDF`
-Evaluate signed-distance-fields with great efficiency using the power of the Unity Job System and the Burst Compiler.
+I'll implement it later.
 
-## Calculation Method - volume
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/octree.png" width = 60%>
+
+#### Native SDF
+Evaluate signed-distance-fields 
+with great efficiency using the power of 
+the Unity Job System and the Burst Compiler.
+
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/nativeSDF.png" width = 60%>
+
+This example is complex and I could not found an API to turn mesh into
+voxel.
+However,it provides an efficient way of computing, 
+using the Job system to carry out parallel computing, 
+scheduling multiple cores at the same time. 
+I looked into this technique and planned to use it for SESS3.0 
+and the rest of this article.
+
+### Suface Packing
+This module has not yet been processed.
+
+## Penalty Calculation Method - volume
 ### Principle
-The direction of the penalty force can be derived from the weighted average of all vectors between the centers of colliding pairs of shperes,weighted by their overlap.
+The direction of the penalty force can be derived
+from the weighted average of all vectors between 
+the centers of colliding pairs of shperes,weighted by their overlap.
 
-A simple heuristic would be to consider all overlapping pairs of spheres separately.
+A simple heuristic would be to consider all overlapping 
+pairs of spheres separately.
+Penetration volume of two spheres with 
+radius r1 and r2 respectively.
 
-Penetration volume of two spheres with radius r1 and r2 respectively.
+```C#
+foreach (var sphere1 in _dynamicList)
+{
+    foreach (var sphere2 in _staticList)
+    {
+        if (sphere1.bounds.Intersects(sphere2.bounds))
+        {
+            var force = Common.PenaltyForce(sphere1, sphere2);
+            penaltyForce += force;
+        }
+    }
+}
+```
+It's relatively easy to understand how to use volume 
+overlap to calculate penalties.The simplest way is to 
+nest over the colliding objects and then calculate the 
+force using a formula.
 
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/71FC2EF3-992C-4116-8081-95F59BA50AFF.png)
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/voLume.png" width=60%>
 
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/BDC69D2B-9A72-4075-8D0B-F4A66BFEC1D1.png)
+However, this calculation also has a problem, when a collision sphere
+is wrapped by 8 touched spheres, the force is 0, and the same
+direction and reverse judgment is needed, of course,
+the subsequent calculation method also inherits this way.
 
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/17D12242-1589-4c6d-8061-3A60FF09BD29.png)
+![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/overlap.png)
 
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/8C1020EC-869D-4b88-A00F-9651954128F4.png)
+
+The direction of the penalty force can be derived from the weighted
+average of all vectors between the centers of colliding pairs of spheres
+, weighted by their overlap.
+
+A simple heuristic would be to consider all overlapping pairs of spheres(R<sub>i</sub>, S<sub>j</sub>) secparately.
+Let c<sub>i</sub>,c<sub>j</sub> be their sphere centers and n<sub>ij</sub> = c<sub>i</sub>-c<sub>j</sub>.Then
+we compute the overall direction of the penalty force as the weighted sum n = ∑<sub>i,j</sub>Vol(R<sub>i</sub>∩S<sub>j</sub>)·n<sub>ij</sub>
+
+
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/calvol.png" width=60%>
+
+Penetration volume of two spheres with radius r<sub>1</sub> and r<sub>2</sub>,respectively
+
+Consequently,we get for thr total intersection volume V for two spheres:
+
+
+V = V(r<sub>1</sub>,h<sub>1</sub>)+V(r<sub>2</sub>,h<sub>2</sub>) 
+
+  = π(r<sub>1</sub>+r<sub>2</sub>-d)<sup>2</sup>(d<sup>2</sup>+2dr<sub>2</sub>-
+  3r<sub>2</sub><sup>2</sup>+2dr<sub>1</sub>+6r<sub>1</sub>r<sub>2</sub>-3r<sub>1</sub><sup>2</sup>)/12d
+
+Summarizing,formula allows us to compute the overlap between 
+a pair ofspheres efficiently during the traversal.
+
+Algorithm and its time-critical derivative return a set of 
+overlapping spheres orpotentially overlapping spheres, respectively.
+We compute a force for each of thesepairs of spheres (R<sub>i</sub>,S<sub>j</sub>) by
+
+**f**(R<sub>i</sub>) = k<sub>c</sub>Vol(R<sub>i</sub>∩S<sub>j</sub>)·**n**<sub>R<sub>i</sub></sub>
+
+where k<sub>c</sub> is the contact stiffneess,Vol(R<sub>i</sub>∩S<sub>j</sub>) is the
+overlap volume,and **n**<sub>R<sub>i</sub></sub> is the contact normal.
+
+Summing up all pairwise forces gives the total penalty force:
+
+**f**(R) = ∑ f(R<sub>i</sub>)
+
+R<sub>i</sub>∩S<sub>j</sub> ≠ ∅
+
+
 
 ## Calculation Method - distance
 
@@ -136,7 +208,7 @@ As for which spheres to calculate, and under which case, I will explain in detai
 I broke down the force calculation step into several steps,explain this in terms of per-frame computation
 
 #### Frame 0
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame0.png)
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame0.png" width=60%>
 
 As an illustration, I have divided a cube into 1000 spheres by splitting it 10 * 10 * 10.
 
@@ -152,7 +224,7 @@ To make the calculation more difficult, they have different sphere radii.
 - `Cylinder Collection` is dynamic
 
 #### Frame 1
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame1.png)
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame1.png" width=60%>
 
 If and only if the `SphereCollider` in `Cylinder Collection` and 
 the `SphereCollider` in `Box Collection` first collide
@@ -160,7 +232,8 @@ the `SphereCollider` in `Box Collection` first collide
 - Use `IsInitialCollision` to detect whether there are any collisions in the scene
 - Record the `OriginVector` 
 #### Frame 2
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame2.png)
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame2.png" width=60%>
+
 
 When some `SphereColliders` in `Cylinder Collection` penetrates into `Box Collection`
 - I marked them with blue in the figure
@@ -178,7 +251,8 @@ When some `SphereColliders` in `Cylinder Collection` penetrates into `Box Collec
   - If there's no collisions in scene,detect if penelty end by calculate some direction
 
 #### Frame 3 case 1
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame31.png)
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame31.png" width=60%>
+
 
 We can see that in the third frame, the `Cylinder Collection` falls back, and the motion vector of the `sphere collider` identified in the figure at this time is `frame3`
 
@@ -186,26 +260,30 @@ We can see that in the third frame, the `Cylinder Collection` falls back, and th
 
 #### Frame 3 case 2
 
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame32.png)
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame32.png" width=60%>
+
 
 In this case,everything goes easy
 #### Frame 4
 
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame4.png)
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame4.png" width=60%>
+
 
 Although some of the `sphere collider`s are out of the `Box Collection` zone
 
 they are still in the `collisionList` and reverse the `origin`, so the force continues to be calculated
 
 #### Frame 5
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame5.png)
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame5.png" width=60%>
+
 
 Even though all the `sphere collider`s are out of the `Box Collection` zone
 
 they are still in the `collisionList` and reverse the `origin`, so the force continues to be calculated
 
 #### Frame 6
-![](https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame6.png)
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/frame6.png" width=60%>
+
 
 In this case , `Cylinder Collection` has been rotated,and some of `sphere collider`s have been gone back,some reversed
 - such as,the `sphere collider` which keep vector `frame6_1`,has the same direciton of `origin`
@@ -223,4 +301,6 @@ the operation `Remove`,just could be called at the time:
 Writing multithreaded code can provide high-performance benefits.
 These include significant gains in frame rate.
 Using the Burst compiler with C# jobs gives you improved code generation quality.
-think later~
+Implement later~
+
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/jobsystem_parallelfor_job_batches%201.png" width=80%>
