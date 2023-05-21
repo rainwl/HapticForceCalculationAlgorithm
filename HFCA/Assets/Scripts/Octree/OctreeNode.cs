@@ -59,7 +59,7 @@ namespace OCTREE
 
         public void Draw()
         {
-            Gizmos.color = new Color(0, 1, 0);
+            Gizmos.color = new Color(0, 1, 0,0.5f);
             Gizmos.DrawWireCube(_nodeBounds.center, _nodeBounds.size);
             if (_children == null) return;
             if (_children == null) return;

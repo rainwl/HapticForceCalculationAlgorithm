@@ -90,7 +90,10 @@ efficiency while maintaining high quality voxelization.
 
 I'll implement it later.
 
-<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/octree.png" width = 60%>
+##### OCtree
+I implemented the octree in unity,just like the figure below.
+And we can customize the resolution.
+<img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/octree3.png" width= 70%>
 
 #### Native SDF
 Evaluate signed-distance-fields 

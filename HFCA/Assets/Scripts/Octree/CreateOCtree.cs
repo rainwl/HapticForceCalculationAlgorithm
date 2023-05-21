@@ -6,11 +6,11 @@ namespace OCTREE
     {
         public GameObject[] worldObjects;
         public int nodeMinSize = 1;
-        private OCTREE.Octree _octree;
+        private Octree _octree;
 
         private void Start()
         {
-            _octree = new OCTREE.Octree(worldObjects, nodeMinSize);
+            _octree = new Octree(worldObjects, nodeMinSize);
         }
 
         private void OnDrawGizmos()
