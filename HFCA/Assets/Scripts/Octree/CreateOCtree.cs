@@ -1,16 +1,17 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace OCTREE
 {
     public class CreateOCtree : MonoBehaviour
     {
-        public GameObject[] worldObjects;
-        public int nodeMinSize = 1;
+        public GameObject[] objects;
+        public float nodeMinSize = 1;
         private Octree _octree;
 
         private void Start()
         {
-            _octree = new Octree(worldObjects, nodeMinSize);
+            _octree = new Octree(objects, nodeMinSize);
         }
 
         private void OnDrawGizmos()
