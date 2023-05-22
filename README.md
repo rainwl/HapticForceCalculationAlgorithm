@@ -95,6 +95,10 @@ I implemented the octree in unity,just like the figure below.
 And we can customize the resolution.
 <img src="https://pic4rain.oss-cn-beijing.aliyuncs.com/img/octree3.png" width= 70%>
 
+#### Greedy
+https://github.com/nukadelic/Sphere-3d-Surface-Packing
+
+
 #### Native SDF
 Evaluate signed-distance-fields 
 with great efficiency using the power of 
