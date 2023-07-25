@@ -721,13 +721,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objects:
-  - {fileID: 2043261303}
-  - {fileID: 944795173}
-  - {fileID: 902676115}
-  - {fileID: 895869222}
-  - {fileID: 400212056}
   - {fileID: 902987368}
-  nodeMinSize: 1
+  nodeMinSize: 0.2
 --- !u!4 &1665074107
 Transform:
   m_ObjectHideFlags: 0

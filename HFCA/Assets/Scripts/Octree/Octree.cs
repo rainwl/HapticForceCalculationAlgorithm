@@ -15,17 +15,14 @@ namespace OCTREE
                 bounds.Encapsulate(go.GetComponent<Collider>().bounds);
             }
 
-            // 
+            // Draw the biggest bounds
             var maxSize = Mathf.Max(new float[] { bounds.size.x, bounds.size.y, bounds.size.z });
             var sizeVector = new Vector3(maxSize, maxSize, maxSize) * 0.5f;
             bounds.SetMinMax(bounds.center - sizeVector, bounds.center + sizeVector);
+            
+            // Divide the bounds
             RootNode = new OctreeNode(bounds, minNodeSize);
-            AddObjects(objects);
-        }
-
-        private void AddObjects(GameObject[] worldObjects)
-        {
-            foreach (var go in worldObjects)
+            foreach (var go in objects)
             {
                 RootNode.AddObject(go);
             }
